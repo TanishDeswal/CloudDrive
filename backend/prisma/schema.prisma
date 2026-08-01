@@ -43,19 +43,21 @@ model Folder {
 }
 
 model File {
-  id          String   @id @default(cuid())
+  id        String   @id @default(cuid())
 
-  name        String
-  blobName    String
-  mimeType    String
-  size        Int
+  name      String
+  blobName  String
+  url       String
 
-  ownerId     String
-  owner        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  mimeType  String
+  size      Int
 
-  folderId    String?
-  folder       Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  ownerId   String
+  owner     User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  folderId  String?
+  folder    Folder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
