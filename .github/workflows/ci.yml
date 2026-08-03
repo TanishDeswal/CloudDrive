@@ -1,4 +1,4 @@
-name: CloudDrive CI/CD
+name: CloudDrive Backend CI/CD
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  docker:
+
+  backend:
 
     runs-on: ubuntu-latest
 
@@ -22,18 +23,25 @@ jobs:
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-      - name: Build Backend Image
+      - name: Build Backend Docker Image
         run: |
-          docker build -t ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:latest ./backend
+          docker build \
+          -t ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:${{ github.sha }} \
+          -t ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:latest \
+          ./backend
 
-      - name: Push Backend Image
+      - name: Push Backend Docker Image
         run: |
+          docker push ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:${{ github.sha }}
           docker push ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:latest
 
-      - name: Build Frontend Image
-        run: |
-          docker build -t ${{ secrets.AZURE_REGISTRY }}/clouddrive-frontend:latest ./frontend
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Push Frontend Image
-        run: |
-          docker push ${{ secrets.AZURE_REGISTRY }}/clouddrive-frontend:latest
+      - name: Deploy Backend to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: clouddrive-api
+          images: ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:latest
