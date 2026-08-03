@@ -67,10 +67,9 @@ export default function UploadButton({
     };
 
     return (
+        <div className="flex flex-col gap-3">
 
-        <div className="flex items-center gap-3">
-
-            <label className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg cursor-pointer">
+            <label className="w-fit bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg cursor-pointer text-center">
 
                 Upload File
 
@@ -84,12 +83,17 @@ export default function UploadButton({
 
             {uploading && (
 
-                <div className="flex items-center gap-3">
+                <div className="w-72">
 
-                    <div className="w-40 bg-gray-200 rounded-full h-3">
+                    <div className="flex justify-between text-sm mb-2">
+                        <span>Uploading...</span>
+                        <span>{progress}%</span>
+                    </div>
+
+                    <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
 
                         <div
-                            className="bg-blue-600 h-3 rounded-full transition-all"
+                            className="h-full bg-blue-600 transition-all duration-300"
                             style={{
                                 width: `${progress}%`
                             }}
@@ -97,15 +101,11 @@ export default function UploadButton({
 
                     </div>
 
-                    <span className="text-sm font-medium">
-                        {progress}%
-                    </span>
-
                     <button
                         onClick={cancelUpload}
-                        className="text-red-600 hover:text-red-800"
+                        className="mt-2 text-sm text-red-600 hover:text-red-800"
                     >
-                        Cancel
+                        Cancel Upload
                     </button>
 
                 </div>
@@ -113,7 +113,6 @@ export default function UploadButton({
             )}
 
         </div>
-
     );
 
 }
