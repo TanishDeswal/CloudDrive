@@ -43,5 +43,5 @@ jobs:
       - name: Deploy Backend to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: clouddrive-api
+          app-name: clouddrive-api-test
           images: ${{ secrets.AZURE_REGISTRY }}/clouddrive-backend:latest
