@@ -38,7 +38,12 @@ export const createFolder = async (name) => {
 
 };
 
-export const uploadFile = async (file, folderId = null) => {
+export const uploadFile = async (
+    file,
+    folderId,
+    onProgress,
+    signal
+) => {
 
     const formData = new FormData();
 
@@ -54,7 +59,22 @@ export const uploadFile = async (file, folderId = null) => {
         {
             headers: {
                 "Content-Type": "multipart/form-data"
+            },
+
+            signal,
+
+            onUploadProgress: (event) => {
+
+                const percent = Math.round(
+                    (event.loaded * 100) / event.total
+                );
+
+                if (onProgress) {
+                    onProgress(percent);
+                }
+
             }
+
         }
     );
 
