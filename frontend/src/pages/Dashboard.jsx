@@ -400,9 +400,11 @@ export default function Dashboard() {
                                     </button>
 
                                     <UploadButton
-                                        onUpload={refreshFiles}
                                         currentFolder={currentFolder}
+                                        onUpload={refreshFiles}
                                     />
+
+                                    <UploadProgress />
 
                                 </div>
 

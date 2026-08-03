@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useUpload } from "../context/UploadContext";
 import { uploadFile } from "../services/dashboard";
 
 export default function UploadButton({
@@ -6,9 +6,12 @@ export default function UploadButton({
     currentFolder
 }) {
 
-    const [progress, setProgress] = useState(0);
-    const [uploading, setUploading] = useState(false);
-    const [controller, setController] = useState(null);
+    const {
+        setUploading,
+        setProgress,
+        setFileName,
+        setController
+    } = useUpload();
 
     const handleChange = async (event) => {
 
@@ -21,6 +24,7 @@ export default function UploadButton({
         setController(abortController);
         setUploading(true);
         setProgress(0);
+        setFileName(file.name);
 
         try {
 
@@ -35,11 +39,7 @@ export default function UploadButton({
 
         } catch (err) {
 
-            if (err.name === "CanceledError") {
-
-                alert("Upload cancelled");
-
-            } else {
+            if (err.name !== "CanceledError") {
 
                 console.error(err);
 
@@ -58,61 +58,20 @@ export default function UploadButton({
 
     };
 
-    const cancelUpload = () => {
-
-        if (controller) {
-            controller.abort();
-        }
-
-    };
-
     return (
-        <div className="flex flex-col gap-3">
 
-            <label className="w-fit bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg cursor-pointer text-center">
+        <label className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg cursor-pointer">
 
-                Upload File
+            Upload File
 
-                <input
-                    type="file"
-                    hidden
-                    onChange={handleChange}
-                />
+            <input
+                hidden
+                type="file"
+                onChange={handleChange}
+            />
 
-            </label>
+        </label>
 
-            {uploading && (
-
-                <div className="w-72">
-
-                    <div className="flex justify-between text-sm mb-2">
-                        <span>Uploading...</span>
-                        <span>{progress}%</span>
-                    </div>
-
-                    <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-
-                        <div
-                            className="h-full bg-blue-600 transition-all duration-300"
-                            style={{
-                                width: `${progress}%`
-                            }}
-                        />
-
-                    </div>
-
-                    <button
-                        onClick={cancelUpload}
-                        className="mt-2 text-sm text-red-600 hover:text-red-800"
-                    >
-                        Cancel Upload
-                    </button>
-
-                </div>
-
-            )}
-
-        </div>
     );
 
 }
