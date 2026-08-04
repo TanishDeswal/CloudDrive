@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import FolderList from "../components/FolderList";
 import FileList from "../components/FileList";
 import UploadButton from "../components/UploadButton";
+import UploadProgress from "../components/UploadProgress";
 
 import {
     getUser,
@@ -356,11 +357,11 @@ export default function Dashboard() {
 
                             {/* Toolbar */}
 
-                            <div className="flex justify-between items-center mb-8">
+                            <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
 
                                 {/* Search */}
 
-                                <div className="relative">
+                                <div className="relative w-full max-w-sm">
 
                                     <input
                                         type="text"
@@ -369,7 +370,7 @@ export default function Dashboard() {
                                         onChange={(e) =>
                                             setSearch(e.target.value)
                                         }
-                                        className="w-64 rounded-lg border border-gray-300 pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full rounded-lg border border-gray-300 pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
 
                                     <span className="absolute left-3 top-3 text-gray-400">
@@ -380,7 +381,7 @@ export default function Dashboard() {
 
                                 {/* Actions */}
 
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-3">
 
                                     <input
                                         type="text"
@@ -403,8 +404,6 @@ export default function Dashboard() {
                                         currentFolder={currentFolder}
                                         onUpload={refreshFiles}
                                     />
-
-                                    <UploadProgress />
 
                                 </div>
 
@@ -476,6 +475,7 @@ export default function Dashboard() {
                 </div>
 
             </div>
+            <UploadProgress />
 
         </div>
 
