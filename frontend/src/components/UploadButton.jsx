@@ -1,4 +1,4 @@
-import { useUpload } from "../context/UploadContext";
+import { useUpload } from "../components/UploadContext";
 import { uploadFile } from "../services/dashboard";
 
 export default function UploadButton({

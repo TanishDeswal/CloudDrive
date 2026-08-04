@@ -1,4 +1,4 @@
-import { useUpload } from "../context/UploadContext";
+import { useUpload } from "../components/UploadContext";
 
 export default function UploadProgress() {
 
